@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<style>
+.container-name div {
+    display: inline-block;
+	width: 500px;
+	min-height: 50px;
+	height: auto;
+}
+ 
+</style>
+
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="./drawGraph.js"></script>
+	
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
+	
+	
+	
+	<title>Religion2Vec</title>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#" style="font-size: 30px"><b>Religion2Vec</b></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" style="font-size: 20px">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./bible.html">Bible</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./quran.html">Quran</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./torah.html">Torah</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  </head>
+
+<body>
+ <div class="container">
+  <h2 style="padding-top: 10px">
+    Draw some graphs
+    <small class="text-muted">find out which terms are related and compare across the books</small>
+	</h2>
+ 
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	  <div class="form-inline" style="padding-top: 20px;">
+		<div class="form-group">
+		  <label for="word"><h5>Look up a word: &nbsp; </h5></label>
+		  <input type="word" class="form-control" id="word" placeholder="Enter word" name="word">
+		</div>
+		&nbsp; &nbsp;
+
+		<select class="btn btn-secondary dropdown-toggle" data-style="btn-primary" id="wordType" name="wordType">
+		
+		<option>Part of Speech</option>
+ 
+		<option>Any</option>
+		 
+		<option>Verb</option>
+		 
+		<option>Noun</option>
+		 
+		<option>Adjective</option>
+		 
+		<option>Adverb</option>
+		 
+		</select>
+		&nbsp; &nbsp; &nbsp;
+		<input class="form-control bfh-number" type="number" id="similarnb" name="similarnb" min="5" max="150" placeholder="#nb">
+	   &nbsp; &nbsp; &nbsp;
+		<button type="button" id="submit" class="btn btn-primary" onclick="loadDoc()" >Submit</button>
+		&nbsp; &nbsp; &nbsp;
+		<div class="checkbox">
+		  <label><input type="checkbox" id="bible" name="bible" checked>&nbsp; Bible  </label>
+		</div>
+		&nbsp; &nbsp; &nbsp;
+		<div class="checkbox">
+		  <label><input type="checkbox" id="quran" name="quran" checked>&nbsp; Quran  </label>
+		</div>
+		&nbsp; &nbsp; &nbsp;
+		<div class="checkbox disabled">
+		  <label><input type="checkbox" id="torah" name="torah" checked>&nbsp; Torah  </label>
+		</div>
+	  </div>
+	  
+  </div>
+  
+</div>
+
+  
+
+<div style="float:left" id="biblediv">	
+</div>
+<div style="float:left" id="qurandiv">
+</div>
+<div style="float:left" id="torahdiv">
+</div>
+
+<script>
+	$(document).ready(() => {
+
+
+	});
+	var testWidth = window.innerWidth/3.2;
+	var UI = {
+		showToast: (text, colorClass, options) => {
+			// options are optional
+			var opts = options || {};
+
+			// setup some defaults
+			opts.defaultText = opts.defaultText || 'default text';
+			opts.displayTime = opts.displayTime || 3000;
+			opts.target = opts.target || 'body';
+
+			$('<div/>')
+				.addClass('toast')
+				//.addClass(colorClass)
+				.css({
+					'font-size': '20px',
+					'z-index': '10000',
+					'padding': '15px 20px',
+					'color': '#fff',
+					'border-radius': '20px',
+					'background-color': 'rgba(223, 83, 83, .9)',
+					'display': 'inline-block',
+					'position': 'fixed',
+					'top': '-100px',
+					'right': '15px',
+					'opacity': '0',
+					'transition': 'all 0.6s ease-out',
+				})
+				.prependTo($(opts.target))
+				.text(text || opts.defaultText)
+				.queue(function(next) {
+					$(this).css({
+						'opacity': 1
+					});
+					var topOffset = 150;
+					$('.toast').each(function() {
+						var $this = $(this);
+						var height = $this.outerHeight();
+						var offset = 15;
+						$this.css('top', topOffset + 'px');
+
+						topOffset += height + offset;
+					});
+					next();
+				})
+				.delay(opts.displayTime)
+				.queue(function(next) {
+					var $this = $(this);
+					var width = $this.outerWidth() + 20;
+					$this.css({
+						'right': '-' + width + 'px',
+						'opacity': 0
+					});
+					next();
+				})
+				.delay(600)
+				.queue(function(next) {
+					$(this).remove();
+					next();
+				});
+		}
+	};
+
+	var word;
+	var similarnb;
+	var wordType;
+	var idsArray = [];
+	var biblecharts = [false, false, false];
+	var qurancharts = [false, false, false];
+	var torahcharts = [false, false, false];
+
+	function loadDoc() {
+		word = (document.getElementById("word").value).toLowerCase();
+		if(word == '') {
+			UI.showToast("Please enter a word!");
+			return;
+		}
+		
+		if(word.indexOf(' ') > -1) {
+			UI.showToast("Please enter a single word!");
+			return;
+		}
+		
+		$('#submit').attr("disabled", true);
+		$("#submit").html('Loading...');			
+		
+		similarnb = document.getElementById("similarnb").value;
+		if (similarnb == '') {
+			similarnb = 5;
+		}
+		wordType = (document.getElementById("wordType").value).toLowerCase();
+		if(wordType == 'part of speech'){
+			wordType = 'any';
+		}
+		loadBook("Bible");
+		loadBook("Quran");
+		loadBook("Torah");
+	}
+
+		
+	function round(value, decimals) {
+		return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+	}
+
+	function absentWord(book) {
+		//put in div id = alerts also fade in 2 secs
+		var textwarning = word + " is not found in the " + book + "!";
+		UI.showToast(textwarning, 'green');
+	}
+
+	function sleep(miliseconds) {
+		var currentTime = new Date().getTime();
+		while (currentTime + miliseconds >= new Date().getTime()) {}
+	}
+	
+	//checks if the (book, word, type) id exists
+	function exists(book, word, type){
+		for(var i = 0; i<idsArray.length;i++){
+			if(idsArray[i].includes(book+word+type)){
+				return true;
+			}
+		}
+		return false;
+	}
+	//returns id of (book, word, type) div
+	function getId(book, word, type){
+		for(var i = 0; i<idsArray.length;i++){
+			if(idsArray[i].includes(book+word+type)){
+				return idsArray[i];
+			}
+		}
+	}
+	//adds the id of (book, word, type) div if it hasn't already been added
+	function addId(id, book, word, type){
+		if(!exists(book, word, type)){
+			idsArray.push(id);
+			return true;
+		}
+		return false;
+	}
+	
+	//removes the (book, word, type) id when the graph is deleted
+	function removeId(book, word, type){			
+		for(var i=0; i<idsArray.length; i++){
+			if(idsArray[i].includes(book+word+type)){
+				idsArray.splice(i,1);
+			}
+		}
+	}
+	
+	var worde = document.getElementById("word");
+	var similarnbe = document.getElementById("similarnb");
+	worde.addEventListener("keyup", function(event) {
+	  if (event.keyCode === 13) {
+	   event.preventDefault();
+	   document.getElementById("submit").click();
+	  }
+	});
+	similarnbe.addEventListener("keyup", function(event) {
+	  if (event.keyCode === 13) {
+	   event.preventDefault();
+	   document.getElementById("submit").click();
+	  }
+	});
+
+function loadBook(book, maindivbook){
+	var maindivbook = document.getElementById(book.toLowerCase()+"div");
+	var bookElement = document.getElementById(book.toLowerCase());
+	if (bookElement.checked) {
+		var cid = "chart" + Math.random().toString(36).substring(7) + book + word + wordType;
+		var chart = document.createElement("DIV");
+		chart.setAttribute("style", "height: 450px; width: "+testWidth+"px; margin-top:1.5em");	
+		chart.id = cid;
+		if (cid != '') {
+			var xhttp_book = new XMLHttpRequest();
+				xhttp_book.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var result_book = this.responseText;
+						console.log(book + ":  " + result_book);
+						if (result_book != 'absent') {
+							if(addId(cid,book,word, wordType)){
+								maindivbook.appendChild(chart);
+							}else{
+								cid = getId(book, word, wordType);
+							}
+							 
+							drawGraph(JSON.parse(result_book), cid, book, wordType);
+
+						} else {
+							absentWord(book);
+						}
+						$('#submit').attr("disabled", false);
+						$("#submit").html('Submit');
+					}
+				};
+			xhttp_book.open("GET", "book.php?book=" + book + "&word=" + word + "&wordType=" + wordType + "&similarnb=" + similarnb, true);
+			xhttp_book.send();
+		}
+	}
+}
+</script>
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
