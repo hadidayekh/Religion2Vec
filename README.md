@@ -10,7 +10,7 @@ In order to use the interface, there are steps you need to follow:
    * `json`
 3. Install and set up WampServer in case you have not done so already.
 4. Create a new folder in the 'www' directory of your WampServer, and add all the files of the project to it.
-5. Once you have your files ready, edit the file `python-path.config` to where you have installed python, as this enables Wamp to locate python. For example,
+5. Once you have your files ready, edit the file `python-path.config`, which is located in `config/`, to where you have installed python. This enables Wamp to locate python. For example,
 edit the file into `C:\Users\...\AppData\Local\Programs\Python\Python37-32\python.exe`.
 
-Now that all requirements are met, launch the app by opening `page.html` on your Wamp host.
+Now that all requirements are met, launch the app by opening the folder you created it on your Wamp host.

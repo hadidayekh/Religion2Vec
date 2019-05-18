@@ -3,7 +3,7 @@
 	function getSimilarWords($book, $word, $sim, $word2){
 		//$python = "C:\\Users\\tce\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe";
 		
-		$python = trim(file_get_contents('python-path.config'));
+		$python = trim(file_get_contents('../config/python-path.config'));
 		
 		$command = "$python bookSimDiff.py " . $book. ' ' .$word. ' ' . $sim . ' ' . $word2.' 5';
 		$output = shell_exec($command);

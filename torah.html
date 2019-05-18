@@ -68,9 +68,9 @@ output[type="word"]{
 
 </style>
 
-<script type="text/javascript" src="data_torah\woman.json"></script>
-<script type="text/javascript" src="data_torah\knowledge.json"></script>
-<script type="text/javascript" src="data_torah\heav.json"></script>	
+<script type="text/javascript" src="data\data_torah\woman.json"></script>
+<script type="text/javascript" src="data\data_torah\knowledge.json"></script>
+<script type="text/javascript" src="data\data_torah\heav.json"></script>	
 <!--<script type="text/javascript" src="data_torah\hell.json"></script>	
  -->
  <head>
@@ -92,7 +92,7 @@ output[type="word"]{
   <div class="collapse navbar-collapse" id="navbarNav" style="font-size: 20px">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="./page.html">Home</a>
+        <a class="nav-link" href="./index.html">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="./bible.html">Bible</a>
@@ -555,7 +555,7 @@ function getAnswer(){
 			$('#submit').attr("disabled", false);
 			$("#submit").html('Submit');
 	} else {
-		xhttp_torah.open("GET", "bookSimDiff.php?book=torah&word=" + word + "&sim=" + relatedTo + "&word2=" + word2, true);
+		xhttp_torah.open("GET", "./src/bookSimDiff.php?book=torah&word=" + word + "&sim=" + relatedTo + "&word2=" + word2, true);
 		xhttp_torah.send();
 	}
 }

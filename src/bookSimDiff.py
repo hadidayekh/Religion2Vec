@@ -5,7 +5,7 @@ import gensim.models.word2vec as w2v
 from gensim import utils, matutils
 import sys
 book = sys.argv[1]
-book2vec = w2v.Word2Vec.load(os.path.join(book + "2Vec_trained", "trained", book + "2vec.w2v"))
+book2vec = w2v.Word2Vec.load(os.path.join("..","data",book+ "2Vec_trained", "trained", book + "2vec.w2v"))
 
 def nearest_sim_diff(start1, end1, end2, num=1):
     start1 = start1.lower()

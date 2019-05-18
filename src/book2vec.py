@@ -9,8 +9,8 @@ import sys
 from json import dumps as json_dumps
 
 book = sys.argv[1]
-book2vec = w2v.load(os.path.join(book+ "2Vec_trained", "trained", book + "2vec.w2v"))
-points = read_pickle(book + "2Vec_trained/reduced_" + book + ".pkl")
+book2vec = w2v.load(os.path.join("..","data",book+ "2Vec_trained", "trained", book + "2vec.w2v"))
+points = read_pickle("../data/"+book + "2Vec_trained/reduced_" + book + ".pkl")
 
 
 def get_word_count(word, word_vectors):
