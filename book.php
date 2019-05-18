@@ -3,7 +3,8 @@
 	$nbint = 5;
 
 	function getSimilarWords($book, $word, $nb, $type){
-		$python = "C:\\Users\\tce\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe";
+		//$python = "C:\\Users\\tce\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe";
+		$python = trim(file_get_contents('python-path.config'));
 		$command = "$python book2vec.py ".$book. ' ' . $word. ' ' . $nb . ' ' . $type;
 		$output = exec($command);
 		return $output;

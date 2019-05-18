@@ -444,7 +444,27 @@ function drawGraph(word, json_name, book) {
 
 <script>
 
-
+	var word1 = document.getElementById("word");
+	var word2 = document.getElementById("word2");
+	var word3 = document.getElementById("relatedTo");
+	word1.addEventListener("keyup", function(event) {
+	  if (event.keyCode === 13) {
+	   event.preventDefault();
+	   document.getElementById("submit").click();
+	  }
+	});
+	word2.addEventListener("keyup", function(event) {
+	  if (event.keyCode === 13) {
+	   event.preventDefault();
+	   document.getElementById("submit").click();
+	  }
+	});
+	word3.addEventListener("keyup", function(event) {
+	  if (event.keyCode === 13) {
+	   event.preventDefault();
+	   document.getElementById("submit").click();
+	  }
+	});
  
 var word;
 var relatedTo;
