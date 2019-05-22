@@ -1,4 +1,7 @@
 # Religion2Vec
+
+## This branch is for exploring different translations.
+
 Religion2Vec provides a web interface to explore semantic analysis of words in the corpuses of the three main religious books: the Quran, the Bible, and the Torah.<br>
 
 In order to use the interface, there are steps you need to follow:
