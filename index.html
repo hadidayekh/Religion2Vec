@@ -41,6 +41,14 @@
 
 <body>
     <div class="container" id="con_div">
+		<h2 style="padding-top: 10px">
+		Choose the trained model file as well as the pickle file.<br><br>
+		<small class="text-muted">Trained w2v model: &nbsp;&nbsp;&nbsp;&nbsp;<input type="file" id="modelFile"><br><br></small>
+		<small class="text-muted">Coordinates Pickle: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="file" id="pickleFile"><br></small>
+		
+		</h2>
+		
+		
         <h2 style="padding-top: 10px">
 		Draw some graphs
 		<small class="text-muted">find out which terms are related and compare across the books</small>
@@ -164,7 +172,7 @@
         function round(value, decimals) {
             return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
         }
-
+		
         function absentWord(book) {
             //put in div id = alerts also fade in 2 secs
             var textwarning = word + " is not found in the " + book + "!";
@@ -253,7 +261,9 @@
                         $("#submit").html('Submit');
                     }
                 };
-                xhttp_book.open("GET", "./src/book.php?book=" + book + "&word=" + word + "&wordType=" + wordType + "&similarnb=" + similarnb, true);
+				var modelfile = document.getElementById("modelFile").files[0].name;
+				var picklefile = document.getElementById("pickleFile").files[0].name;
+                xhttp_book.open("GET", "./src/book.php?modelfile=" + modelfile + "&picklefile=" + picklefile+"&word=" + word + "&wordType=" + wordType + "&similarnb=" + similarnb, true);
                 xhttp_book.send();
             }
         }
