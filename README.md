@@ -19,7 +19,7 @@ edit the file into `C:\Users\...\AppData\Local\Programs\Python\Python37-32\pytho
 #### Performing dimensionality reduction:
 The steps below need to be followed every time you want to explore a different model:
 1. Locate your w2v file, which is your trained Word2Vec model.
-2. Open `cmd` or `terminal` and <b>change the directory to the directory of the project</b>. Changing the directory is crucial, as the files will save in a relative path, and the software is reading from a relative path.
+2. Open `cmd` or `terminal` and <b>change the directory to the directory of the project</b>. Changing the directory is crucial, as the files will save in a relative path, and the software is reading from that relative path.
 3. Run the following command, replacing the argument with the path to your w2v file:
    <pre><code>python w2v_tsne.py &ltpath-to-w2v-file&gt</code></pre>
 4. Once the code finishes executing, the model and coordinates files will be saved in a `data` subfolder. Consider <b>saving</b> these in a different folder for future use. Make sure that if you want to explore a specific model, you add the corresponding files to the `data` subfolder with the names `book2vec.w2v` and `reduced_book.pkl`.
