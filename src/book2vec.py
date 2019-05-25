@@ -8,9 +8,8 @@ from pandas import Series as pd_Series
 import sys
 from json import dumps as json_dumps
 
-book = sys.argv[1]
-book2vec = w2v.load(os.path.join("..","data",book+ "2Vec_trained", "trained", book + "2vec.w2v"))
-points = read_pickle("../data/"+book + "2Vec_trained/reduced_" + book + ".pkl")
+book2vec = w2v.load(os.path.join("..","data", "book2vec.w2v"))
+points = read_pickle("../data/reduced_book.pkl")
 
 
 def get_word_count(word, word_vectors):
@@ -73,7 +72,7 @@ def get_most_similar_coordinates(word, count=10, pos='any', remove_stop=True): #
 
 ##print("hello")
 
-d = get_most_similar_coordinates(sys.argv[2], int(sys.argv[3]), sys.argv[4])
+d = get_most_similar_coordinates(sys.argv[1], int(sys.argv[2]), sys.argv[3])
 if d is None:
 	print ('absent')
 else:

@@ -43,7 +43,7 @@
     <div class="container" id="con_div">
         <h2 style="padding-top: 10px">
 		Draw some graphs
-		<small class="text-muted">find out which terms are related and compare across the books</small>
+		<small class="text-muted">find out which terms are related in your trained model</small>
 		</h2>
 
         <div class = "centered">
@@ -54,7 +54,11 @@
                     <input type="word" class="form-control" id="word" placeholder="Enter word" name="word" >
                 </div>
                 &nbsp; &nbsp; &nbsp;
-                <input class="form-control bfh-number" type="number" id="similarnb" name="similarnb" min="5" max="150" placeholder="#nb"> &nbsp; &nbsp; &nbsp;
+				<div class="col-xs-5">
+					<label for="similarnb"></label>
+					<input class="form-control bfh-number " type="number" id="similarnb" name="similarnb" min="5" max = "1000000" placeholder="# of words"> &nbsp; &nbsp; &nbsp;
+				  </div>
+                
                 &nbsp; 
 				<button type="button" id="submit" class="btn btn-primary" onclick="loadDoc()">Submit</button>
             </div>
@@ -134,9 +138,6 @@
         var similarnb;
         var wordType;
         var idsArray = [];
-        var biblecharts = [false, false, false];
-        var qurancharts = [false, false, false];
-        var torahcharts = [false, false, false];
 
         function loadDoc() {
             word = (document.getElementById("word").value).toLowerCase();
@@ -158,7 +159,7 @@
                 similarnb = 5;
             }
             wordType = 'any';
-            loadBook("Bible");
+            loadBook("Book");
         }
 
         function round(value, decimals) {
@@ -238,22 +239,23 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var result_book = this.responseText;
                         console.log(book + ":  " + result_book);
-                        if (result_book != 'absent') {
+						if (result_book == 'absent') {
+							absentWord(book);
+						} else if (result_book == 'fail') {
+							UI.showToast("Failed to load model.")
+						} else {
                             if (addId(cid, book, word, wordType)) {
                                 maindivbook.appendChild(chart);
                             } else {
                                 cid = getId(book, word, wordType);
                             }
                             drawGraph(JSON.parse(result_book), cid, book, wordType);
-
-                        } else {
-                            absentWord(book);
                         }
                         $('#submit').attr("disabled", false);
                         $("#submit").html('Submit');
                     }
                 };
-                xhttp_book.open("GET", "./src/book.php?book=" + book + "&word=" + word + "&wordType=" + wordType + "&similarnb=" + similarnb, true);
+                xhttp_book.open("GET", "./src/book.php?word=" + word + "&wordType=" + wordType + "&similarnb=" + similarnb, true);
                 xhttp_book.send();
             }
         }

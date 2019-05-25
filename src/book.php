@@ -2,17 +2,13 @@
 	$nb = '5';
 	$nbint = 5;
 
-	function getSimilarWords($book, $word, $nb, $type){
+	function getSimilarWords($word, $nb, $type){
 		//$python = "C:\\Users\\tce\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe";
 		$python = trim(file_get_contents('../config/python-path.config'));
-		$command = "$python book2vec.py ".$book. ' ' . $word. ' ' . $nb . ' ' . $type;
+		$command = "$python book2vec.py ". $word. ' ' . $nb . ' ' . $type;
 		$output = exec($command);
 		return $output;
 	}
-	if (isset($_GET['book'])) {
-		$book = $_GET['book'];
-	}
-	
 	if (isset($_GET['word'])) {
 		$word = $_GET['word'];
 	}
@@ -38,10 +34,14 @@
 	if (isset($_GET['word']) && isset($_GET['wordType']) && isset($_GET['similarnb'])){
 		
 		if($word != ""){
-			$output = getSimilarWords($book, $word, $nb, $type);
+			$output = getSimilarWords($word, $nb, $type);
 			if(trim($output) =='absent'){
 				echo "absent";
-			}else{
+			}
+			else if (trim($output) =='') {
+				echo "fail";
+			}
+			else{
 				echo $output;
 			}
 		}
